@@ -37,6 +37,11 @@ function showRectangleCreationPanel(): Array<number> {
   return [x, y]
 }
 
+/**
+ * Draws rectangle on center of screen
+ * @param [] Array containing width and height of the rectangle
+ */
+
 function createRectangle([x,y]: Array<number>): PathItem {
   let rectangle: PathItem;
   let document: Document = app.activeDocument;
