@@ -15,11 +15,14 @@ function showRectangleCreationPanel(): Array<number> {
   };
 
   let rectanglePanel: Window = new Window("dialog", "Fill fill rectangle data", undefined, {borderless: true});
+  
+  let widthGroup: Group = rectanglePanel.add("group", undefined);
+  widthGroup.orientation = "row";
 
-  let widthTextField: EditText = rectanglePanel.add("edittext");
+  let widthTextField: EditText = widthGroup.add("edittext");
   widthTextField.characters = 4;
 
-  let unitDropDown: DropDownList = rectanglePanel.add("dropdownlist", undefined, units);
+  let unitDropDown: DropDownList = widthGroup.add("dropdownlist", undefined, units);
   unitDropDown.selection = unitDropDown.items[0];
 
   let heightDropDown: DropDownList = rectanglePanel.add("dropdownlist", undefined, heightNames);
