@@ -7,6 +7,13 @@
     {
       "type": "extendscript-debug",
       "request": "launch",
+      "name": "Test",
+      "program": "${workspaceFolder}\\Build\\test.js",
+      "stopOnEntry": false
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "launch",
       "name": "Menu-UI-Rectangle",
       "program": "${workspaceFolder}\\Build\\Menu_UI_Rectangle.js",
       "stopOnEntry": false
