@@ -25,25 +25,62 @@ function getDestinationPath(pathToDocument: string): string {
   return newPath;
 }
 
-function getImages(document: Document, destPath: string, filename: string): void {
-  let options: ImageCaptureOptions = new ImageCaptureOptions;
+function createImages(document: Document, destPath: string, filename: string): void {
 
-  options.resolution = 150;
-  options.antiAliasing = true;
-  options.matte = false;
+  let options: ExportForScreensOptionsJPEG = new ExportForScreensOptionsJPEG;
+  options.compressionMethod = JPEGCompressionMethodType.BASELINESTANDARD;
+  options.embedICCProfile = false;
+  options.antiAliasing = AntiAliasingMethod.TYPEOPTIMIZED;
+  options.scaleType = ExportForScreensScaleType.SCALEBYRESOLUTION;
+  options.scaleTypeValue = 150;
+  
+  let prefix: string;
+  prefix = `${filename.split("\.").shift()}!@#$`;
 
-  for(let i = 0; i< document.artboards.length; i++) {
-    let outputFile: File;
-    outputFile = new File(`${destPath}\\${filename}${i + 1}.jpg`);
-    document.imageCapture(outputFile, document.artboards[i].artboardRect, options);
+  let outputFile: File;
+  outputFile = new File(`${destPath}\\${filename}`);
+  document.exportForScreens(outputFile, ExportForScreensType.SE_JPEG100, options, undefined, prefix);
+
+}
+
+function moveFilesToParentFolder(rootPath: string): void {
+  const rootFolder: Folder = new Folder(rootPath);
+  let filesFolder: Folder = new Folder(`${rootPath}/150ppi`);
+  let files: Array<File | Folder>;
+  
+  files = filesFolder.getFiles("");
+
+  for (let i = files.length; i>0 ;i--) {
+    let file: File | Folder = files.pop();
+    if (file.exists) {
+      file.copy(`${rootFolder}\\${file.displayName}`);
+      file.remove();
+    }
   }
+  filesFolder.remove();
+}
 
+function correctFileNames(rootPath: string): void {
+  const rootFolder: Folder = new Folder(`${rootPath}/150ppi`);
+  let files: Array<File | Folder>;
+  
+  files = rootFolder.getFiles("");
+  
+  for (let i = 0; i<files.length; i++) {
+    let file: File | Folder = files[i];
+    if (file.exists) {
+      let newName = `${file.displayName.split("!@#$").shift()}_${i>9 ? "" : "0"}${i}.jpg`;
+      file.rename(newName);
+    }
+  }
 }
 
 function main(): void {
   const activeDocument: Document = getActiveDocument(app);
   const destPath: string = getDestinationPath(activeDocument.fullName.fsName);
-  getImages(activeDocument, destPath, activeDocument.fullName.displayName.split("\.").pop());
+  createImages(activeDocument, destPath, activeDocument.fullName.displayName.split("\\").pop());
+  correctFileNames(destPath);
+  moveFilesToParentFolder(destPath);
   displayMessage("Files saved");
 }
 
