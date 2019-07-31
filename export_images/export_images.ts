@@ -22,8 +22,15 @@ function getDestinationPath(pathToDocument: string): string {
   name = pathToDocument.split("\\").pop();
   newPath = `${pathToDocument.slice(0, -6 - (name.length + 1))}_media` ;
 
-  return newPath;
+  let checkFolder: Folder = new Folder(`${newPath}\\`);
+  if (checkFolder.exists) {
+    return newPath;
+  } else {
+    checkFolder.create();
+    return newPath;
+  }
 }
+
 
 function createImages(document: Document, destPath: string, filename: string): void {
 
@@ -69,7 +76,7 @@ function correctFileNames(rootPath: string): void {
   for (let i = 0; i<files.length; i++) {
     let file: File | Folder = files[i];
     if (file.exists) {
-      let newName = `${file.displayName.split("!@#$").shift()}_${i>9 ? "" : "0"}${i}.jpg`;
+      let newName = `${file.displayName.split("!@#$").shift()}-${i>9 ? "" : "0"}${i}.jpg`;
       file.rename(newName);
     }
   }
