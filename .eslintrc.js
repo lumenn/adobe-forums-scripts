@@ -3,4 +3,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   // extends: ['@airbnb-typescript'],
   extends: ['airbnb-typescript/base'],
+  rules: {
+    'no-undef': 'off',
+  }
 }
