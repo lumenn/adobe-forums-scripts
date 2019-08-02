@@ -14,6 +14,13 @@
     {
       "type": "extendscript-debug",
       "request": "launch",
+      "name": "select_pageItems_with_name",
+      "program": "${workspaceFolder}\\Build\\select_pageItems_with_name.js",
+      "stopOnEntry": false
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "launch",
       "name": "Test",
       "program": "${workspaceFolder}\\Build\\test.js",
       "stopOnEntry": false
