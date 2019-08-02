@@ -7,6 +7,13 @@
     {
       "type": "extendscript-debug",
       "request": "launch",
+      "name": "export_images",
+      "program": "${workspaceFolder}\\Build\\export_images.js",
+      "stopOnEntry": false
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "launch",
       "name": "select_pageItems_with_name",
       "program": "${workspaceFolder}\\Build\\select_pageItems_with_name.js",
       "stopOnEntry": false
