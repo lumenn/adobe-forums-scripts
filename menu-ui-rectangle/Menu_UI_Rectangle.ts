@@ -2,7 +2,7 @@
  * Prompts user to fill up dialog defining width, and height of the rectangle
  */
 
-function showRectangleCreationPanel(): Array<number> {
+function showRectangleCreationPanel(): number[] {
   let x: number = 0;
   let y: number = 0;
   let unit: string;
@@ -11,7 +11,7 @@ function showRectangleCreationPanel(): Array<number> {
   const heights: object = {
     A: 50,
     B: 70,
-    C: 90
+    C: 90,
   };
 
   let rectanglePanel: Window = new Window("dialog", "Fill fill rectangle data", undefined, {borderless: true});
