@@ -19,10 +19,11 @@ function getDestinationPath(pathToDocument: string): string {
   let newPath: string;
   let name: string;
 
-  name = pathToDocument.split("\\").pop();
-  newPath = `${pathToDocument.slice(0, -6 - (name.length + 1))}_media` ;
+  name = pathToDocument.split("/").pop();
+  newPath = `${pathToDocument.slice(0, - name.length)}_media` ;
 
-  let checkFolder: Folder = new Folder(`${newPath}\\`);
+  let checkFolder: Folder = new Folder(`${newPath}/`);
+
   if (checkFolder.exists) {
     return newPath;
   } else {
@@ -45,7 +46,7 @@ function createImages(document: Document, destPath: string, filename: string): v
   prefix = `${filename.split("\.").shift()}!@#$`;
 
   let outputFile: File;
-  outputFile = new File(`${destPath}\\${filename}`);
+  outputFile = new File(`${destPath}/${filename}`);
   document.exportForScreens(outputFile, ExportForScreensType.SE_JPEG100, options, undefined, prefix);
 
 }
@@ -60,7 +61,7 @@ function moveFilesToParentFolder(rootPath: string): void {
   for (let i = files.length; i>0 ;i--) {
     let file: File | Folder = files.pop();
     if (file.exists) {
-      file.copy(`${rootFolder}\\${file.displayName}`);
+      file.copy(`${rootFolder}/${file.displayName}`);
       file.remove();
     }
   }
@@ -84,8 +85,9 @@ function correctFileNames(rootPath: string): void {
 
 function main(): void {
   const activeDocument: Document = getActiveDocument(app);
-  const destPath: string = getDestinationPath(activeDocument.fullName.fsName);
-  createImages(activeDocument, destPath, activeDocument.fullName.displayName.split("\\").pop());
+  let destPath: string = getDestinationPath(activeDocument.path.absoluteURI);
+
+  createImages(activeDocument, destPath, activeDocument.fullName.displayName);
   correctFileNames(destPath);
   moveFilesToParentFolder(destPath);
   displayMessage("Files saved");
