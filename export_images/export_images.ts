@@ -57,7 +57,7 @@ function moveFilesToParentFolder(rootPath: string): void {
   const files: Array<File | Folder> = filesFolder.getFiles('');
 
   for (let i = files.length; i > 0; i -= 1) {
-    if (files.pop() instanceof File) {
+    if (typeof files.pop() === 'File') {
       const file: File = files.pop();
       if (file.exists) {
         file.copy(`${rootFolder}/${file.displayName}`);
