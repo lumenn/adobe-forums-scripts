@@ -5,5 +5,6 @@ module.exports = {
   extends: ['airbnb-typescript/base'],
   rules: {
     'no-undef': 'off',
+    'valid-typeof': 'off',
   }
 }
