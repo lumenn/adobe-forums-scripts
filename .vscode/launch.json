@@ -7,6 +7,13 @@
     {
       "type": "extendscript-debug",
       "request": "launch",
+      "name": "relink_files_txt_file_paths",
+      "program": "${workspaceFolder}\\Build\\relink_files_txt_file_paths.js",
+      "stopOnEntry": false
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "launch",
       "name": "cut_paths_at_anchors",
       "program": "${workspaceFolder}\\Build\\cut_paths_at_anchors.js",
       "stopOnEntry": false
