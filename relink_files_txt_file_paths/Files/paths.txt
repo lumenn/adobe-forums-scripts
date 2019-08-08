@@ -1,0 +1,4 @@
+C:\Maks-Pliki\Skrypty\Kod\Illustrator\adobe-forums\relink_files_txt_file_paths\Files\Links\Black-link.ai
+C:\Maks-Pliki\Skrypty\Kod\Illustrator\adobe-forums\relink_files_txt_file_paths\Files\Links\Cyan-link.ai
+C:\Maks-Pliki\Skrypty\Kod\Illustrator\adobe-forums\relink_files_txt_file_paths\Files\Links\Yellow-link.ai
+C:\Maks-Pliki\Skrypty\Kod\Illustrator\adobe-forums\relink_files_txt_file_paths\Files\Links\Magenta-link.ai
