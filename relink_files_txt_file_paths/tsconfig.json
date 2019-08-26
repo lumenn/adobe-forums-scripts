@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "none",
+    "noLib": true,
+    "types": [
+      "types-for-adobe/Illustrator/2015.3"
+    ],
+    "outDir": "../build/",
+    "removeComments": true
+  },
+  "exclude": [
+    "node_modules",
+  ]
+}
