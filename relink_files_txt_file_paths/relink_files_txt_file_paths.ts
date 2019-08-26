@@ -43,7 +43,7 @@ function saveFile(documentToSave: Document, pathToSave: string, fileName: string
 function main():void {
   const paths: string[] = readPaths(getDataFile());
   const document: Document = app.activeDocument;
-  const savePath: string = 'C:\\Maks-Pliki\\Skrypty\\Kod\\Illustrator\\adobe-forums\\relink_files_txt_file_paths\\Files\\Merged\\';
+  const savePath: string = 'C:\\Maks-Pliki\\Skrypty\\Kod\\Illustrator\\adobe-forums\\relink_files_txt_file_paths\\Files\\Merged With Spaces\\';
 
   for (let i = 0; i < paths.length; i += 1) {
     const path = paths[i];
