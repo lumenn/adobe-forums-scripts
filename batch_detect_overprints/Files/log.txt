@@ -1,5 +1,5 @@
-Overprints: NO 	 No-1.ai
-Overprints: NO 	 Text-no.ai
+Overprints: 	NO 	 No-1.ai
+Overprints: 	NO 	 Text-no.ai
 Overprints: YES 	 Text-yes.ai
 Overprints: YES 	 Yes-2.ai
 Overprints: YES 	 Yes-3-1-1.ai
