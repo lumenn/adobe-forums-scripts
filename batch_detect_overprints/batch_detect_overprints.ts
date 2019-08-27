@@ -162,7 +162,7 @@ function createLog(data: object, files: File[], destinationFolderURI: string): F
 
   for (let i = 0; i < files.length; i += 1) {
     const fileName: string = files[i].name;
-    logFile.writeln(`Overprints: ${data[fileName] ? 'YES' : 'NO'} \t ${fileName}`);
+    logFile.writeln(`Overprints: ${data[fileName] ? 'YES' : '\tNO'} \t ${fileName}`);
   }
   logFile.close();
 
@@ -179,6 +179,7 @@ function main(): void {
     const filesToCheck: File[] = getFiles(folderURI);
     const result: object = processFiles(filesToCheck);
     createLog(result, filesToCheck, folderURI);
+    displayMessage('Log file created');
   } else {
     displayMessage('File was not chosen, aborting script');
   }
