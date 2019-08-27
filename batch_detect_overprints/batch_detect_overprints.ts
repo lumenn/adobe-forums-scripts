@@ -87,13 +87,98 @@ function getFiles(folderURI: string): File[] {
   return filterArrayForFiles(files);
 }
 
+/**
+ * Returns true if there are overprints in document, false if there aren't
+ * @param doc Document to search for overprints
+ */
+
+function checkDocumentForOverprints(doc: Document): boolean {
+  const paths: PathItems = doc.pathItems;
+  const texts: TextFrameItems = doc.textFrames;
+  const rasters: RasterItems = doc.rasterItems;
+
+  for (let i = 0; i < rasters.length; i += 1) {
+    const raster: RasterItem = rasters[i];
+    if (raster.overprint) {
+      return true;
+    }
+  }
+
+  for (let i = 0; i < paths.length; i += 1) {
+    const path: PathItem = paths[i];
+    if (path.fillOverprint || path.strokeOverprint) {
+      return true;
+    }
+  }
+
+  for (let i = 0; i < texts.length; i += 1) {
+    const text: TextFrameItem = texts[i];
+    const { characters }: TextFrameItem = text;
+
+    for (let c = 1; c < characters.length; c += 1) {
+      const character = characters[c];
+
+      if (character.overprintFill || character.overprintStroke) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Loops through all files, opens them, and run a check overprint function
+ * @param files Files to check
+ */
+
+function processFiles(files: File[]): object {
+  const data: object = {};
+  for (let i = 0; i < files.length; i += 1) {
+    const currentDocument: Document = app.open(files[i]);
+
+    if (checkDocumentForOverprints(currentDocument)) {
+      data[`${currentDocument.name}`] = true;
+    } else {
+      data[`${currentDocument.name}`] = false;
+    }
+    currentDocument.close(SaveOptions.DONOTSAVECHANGES);
+  }
+  return data;
+}
+
+/**
+ * Creates a log file.
+ * @param data Object with properties to save
+ * @param files Files, which names ar e keys in data object
+ * @param destinationFolderURI Folder, where te .log File should be saved
+ */
+
+function createLog(data: object, files: File[], destinationFolderURI: string): File {
+  const logFile: File = new File(`${destinationFolderURI}/log.txt`);
+
+  logFile.encoding = 'UTF-8';
+  logFile.open('w');
+
+  for (let i = 0; i < files.length; i += 1) {
+    const fileName: string = files[i].name;
+    logFile.writeln(`Overprints: ${data[fileName] ? 'YES' : 'NO'} \t ${fileName}`);
+  }
+  logFile.close();
+
+  return logFile;
+}
+
+/**
+ * Main function, which controls the script flow
+ */
 function main(): void {
   const folderURI: string = getFolderURI();
 
   if (folderURI) {
-    displayMessage('Works');
     const filesToCheck: File[] = getFiles(folderURI);
-    displayMessage(filesToCheck.length);
+    const result: object = processFiles(filesToCheck);
+    createLog(result, filesToCheck, folderURI);
   } else {
     displayMessage('File was not chosen, aborting script');
   }
