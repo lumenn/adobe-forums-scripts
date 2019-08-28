@@ -134,9 +134,15 @@ function checkDocumentForOverprints(doc: Document): boolean {
 
 function processFiles(files: File[]): object {
   const data: object = {};
-  for (let i = 0; i < files.length; i += 1) {
-    const currentDocument: Document = app.open(files[i]);
 
+  const progressWindow: Window = new Window('palette', 'Processing files');
+  const progressBar: Progressbar = progressWindow.add('progressbar', undefined, 0, files.length);
+  progressBar.preferredSize.width = 300;
+  progressWindow.show();
+
+  for (let i = 0; i < files.length; i += 1) {
+    progressBar.value = i + 1;
+    const currentDocument: Document = app.open(files[i]);
     if (checkDocumentForOverprints(currentDocument)) {
       data[`${currentDocument.name}`] = true;
     } else {
@@ -144,6 +150,7 @@ function processFiles(files: File[]): object {
     }
     currentDocument.close(SaveOptions.DONOTSAVECHANGES);
   }
+  progressWindow.close();
   return data;
 }
 
@@ -161,7 +168,7 @@ function createLog(data: object, files: File[], destinationFolderURI: string): F
   logFile.open('w');
 
   for (let i = 0; i < files.length; i += 1) {
-    const fileName: string = files[i].name;
+    const fileName: string = files[i].displayName;
     logFile.writeln(`Overprints: ${data[fileName] ? 'YES' : 'NO\t'} \t ${fileName}`);
   }
   logFile.close();
@@ -173,6 +180,7 @@ function createLog(data: object, files: File[], destinationFolderURI: string): F
  * Main function, which controls the script flow
  */
 function main(): void {
+  app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
   const folderURI: string = getFolderURI();
 
   if (folderURI) {
