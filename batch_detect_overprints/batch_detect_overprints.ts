@@ -137,7 +137,7 @@ function processFiles(files: File[]): object {
 
   const progressWindow: Window = new Window('palette', 'Processing files');
   const progressBar: Progressbar = progressWindow.add('progressbar', undefined, 0, files.length);
-  progressBar.preferredSize.width = 300;
+  progressBar.preferredSize = [300, undefined];
   progressWindow.show();
 
   for (let i = 0; i < files.length; i += 1) {
