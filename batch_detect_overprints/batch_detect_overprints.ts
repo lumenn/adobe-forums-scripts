@@ -177,10 +177,15 @@ function processFiles(files: File[]): object {
     const currentDocument: Document = app.open(files[i]);
     const layerNames: string[] = checkDocumentForOverprints(currentDocument);
     if (layerNames) {
-      data[`${currentDocument.name}`] = true;
-      data[`${currentDocument.name}`].layers = layerNames;
+      data[`${currentDocument.name}`] = {
+        overprint: true,
+        layers: layerNames,
+      };
     } else {
-      data[`${currentDocument.name}`] = false;
+      data[`${currentDocument.name}`] = {
+        overprint: false,
+        layers: undefined,
+      };
     }
     currentDocument.close(SaveOptions.DONOTSAVECHANGES);
   }
@@ -203,7 +208,18 @@ function createLog(data: object, files: File[], destinationFolderURI: string): F
 
   for (let i = 0; i < files.length; i += 1) {
     const fileName: string = files[i].displayName;
-    logFile.writeln(`Overprints: ${data[fileName] ? 'YES' : 'NO\t'} \t ${fileName}`);
+    logFile.writeln(`Overprints: ${data[fileName].overprint ? 'YES' : 'NO\t'} \t ${fileName}`);
+
+    if (data[fileName].overprint) {
+      const layerNames: string[] = data[fileName].layers;
+      let layers: string = '\t Layers with overprints: ';
+
+      for (let j = 0; j < layerNames.length; j += 1) {
+        layers = `${layers} ${layerNames[j]},`;
+      }
+
+      logFile.writeln(`${layers}\n`);
+    }
   }
   logFile.close();
 
