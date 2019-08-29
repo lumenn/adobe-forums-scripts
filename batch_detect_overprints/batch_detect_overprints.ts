@@ -88,43 +88,75 @@ function getFiles(folderURI: string): File[] {
 }
 
 /**
+ * Searches for given text in array of texts
+ * @param text Text to search for in array
+ * @param arr Array with texts
+ */
+
+function findStringInArray(text: string, arr: string[]) {
+  if (arr.length !== 0) {
+    for (let i = 0; i < arr.length; i += 1) {
+      const currentString: string = arr[i];
+      if (currentString === text) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
  * Returns true if there are overprints in document, false if there aren't
  * @param doc Document to search for overprints
  */
 
-function checkDocumentForOverprints(doc: Document): boolean {
+function checkDocumentForOverprints(doc: Document): string[] {
   const paths: PathItems = doc.pathItems;
   const texts: TextFrameItems = doc.textFrames;
   const rasters: RasterItems = doc.rasterItems;
+  const layerNamesWithOverprintedItems: string[] = [];
 
   for (let i = 0; i < rasters.length; i += 1) {
     const raster: RasterItem = rasters[i];
     if (raster.overprint) {
-      return true;
+      if (!findStringInArray(raster.layer.name, layerNamesWithOverprintedItems)) {
+        layerNamesWithOverprintedItems.push(raster.layer.name);
+      }
     }
   }
 
   for (let i = 0; i < paths.length; i += 1) {
     const path: PathItem = paths[i];
     if (path.fillOverprint || path.strokeOverprint) {
-      return true;
+      if (!findStringInArray(path.layer.name, layerNamesWithOverprintedItems)) {
+        layerNamesWithOverprintedItems.push(path.layer.name);
+      }
     }
   }
 
   for (let i = 0; i < texts.length; i += 1) {
     const text: TextFrameItem = texts[i];
-    const { characters }: TextFrameItem = text;
 
-    for (let c = 1; c < characters.length; c += 1) {
-      const character = characters[c];
+    if (!findStringInArray(text.layer.name, layerNamesWithOverprintedItems)) {
+      const { characters }: TextFrameItem = text;
 
-      if (character.overprintFill || character.overprintStroke) {
-        return true;
+      for (let c = 1; c < characters.length; c += 1) {
+        const character = characters[c];
+
+        if (character.overprintFill || character.overprintStroke) {
+          if (!findStringInArray(text.layer.name, layerNamesWithOverprintedItems)) {
+            layerNamesWithOverprintedItems.push(text.layer.name);
+          } else {
+            break;
+          }
+        }
       }
     }
   }
-
-  return false;
+  if (layerNamesWithOverprintedItems.length > 0) {
+    return layerNamesWithOverprintedItems;
+  }
+  return undefined;
 }
 
 /**
@@ -134,16 +166,30 @@ function checkDocumentForOverprints(doc: Document): boolean {
 
 function processFiles(files: File[]): object {
   const data: object = {};
-  for (let i = 0; i < files.length; i += 1) {
-    const currentDocument: Document = app.open(files[i]);
 
-    if (checkDocumentForOverprints(currentDocument)) {
-      data[`${currentDocument.name}`] = true;
+  const progressWindow: Window = new Window('palette', 'Processing files');
+  const progressBar: Progressbar = progressWindow.add('progressbar', undefined, 0, files.length);
+  progressBar.preferredSize = [300, undefined];
+  progressWindow.show();
+
+  for (let i = 0; i < files.length; i += 1) {
+    progressBar.value = i + 1;
+    const currentDocument: Document = app.open(files[i]);
+    const layerNames: string[] = checkDocumentForOverprints(currentDocument);
+    if (layerNames) {
+      data[`${currentDocument.name}`] = {
+        overprint: true,
+        layers: layerNames,
+      };
     } else {
-      data[`${currentDocument.name}`] = false;
+      data[`${currentDocument.name}`] = {
+        overprint: false,
+        layers: undefined,
+      };
     }
     currentDocument.close(SaveOptions.DONOTSAVECHANGES);
   }
+  progressWindow.close();
   return data;
 }
 
@@ -161,8 +207,19 @@ function createLog(data: object, files: File[], destinationFolderURI: string): F
   logFile.open('w');
 
   for (let i = 0; i < files.length; i += 1) {
-    const fileName: string = files[i].name;
-    logFile.writeln(`Overprints: ${data[fileName] ? 'YES' : 'NO\t'} \t ${fileName}`);
+    const fileName: string = files[i].displayName;
+    logFile.writeln(`Overprints: ${data[fileName].overprint ? 'YES' : 'NO\t'} \t ${fileName}`);
+
+    if (data[fileName].overprint) {
+      const layerNames: string[] = data[fileName].layers;
+      let layers: string = '\t Layers with overprints: ';
+
+      for (let j = 0; j < layerNames.length; j += 1) {
+        layers = `${layers} ${layerNames[j]},`;
+      }
+
+      logFile.writeln(`${layers}\n`);
+    }
   }
   logFile.close();
 
@@ -173,6 +230,7 @@ function createLog(data: object, files: File[], destinationFolderURI: string): F
  * Main function, which controls the script flow
  */
 function main(): void {
+  app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
   const folderURI: string = getFolderURI();
 
   if (folderURI) {

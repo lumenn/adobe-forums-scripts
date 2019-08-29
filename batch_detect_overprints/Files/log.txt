@@ -1,7 +1,17 @@
-Overprints: 	NO 	 No-1.ai
-Overprints: 	NO 	 Text-no.ai
-Overprints: YES 	 Text-yes.ai
-Overprints: YES 	 Yes-2.ai
-Overprints: YES 	 Yes-3-1-1.ai
-Overprints: YES 	 Yes-3-1.ai
-Overprints: YES 	 Yes-3.ai
+Overprints: NO	 	 No -1.ai
+Overprints: NO	 	 Text -no.ai
+Overprints: YES 	 Text -yes.ai
+	 Layers with overprints:  Warstwa 3, Warstwa 1,
+
+Overprints: YES 	 Yes -2.ai
+	 Layers with overprints:  Warstwa 6, Warstwa 3,
+
+Overprints: YES 	 Yes -3-1-1.ai
+	 Layers with overprints:  Warstwa 3, Warstwa 2, Warstwa 5,
+
+Overprints: YES 	 Yes -3-1.ai
+	 Layers with overprints:  Warstwa 3, Warstwa 2,
+
+Overprints: YES 	 Yes -3.ai
+	 Layers with overprints:  Warstwa 5, Warstwa 3, Warstwa 2, Warstwa 1,
+
