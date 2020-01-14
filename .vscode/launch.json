@@ -7,6 +7,13 @@
     {
       "type": "extendscript-debug",
       "request": "launch",
+      "name": "sort_files_in_subfolders_by_modification_year",
+      "program": "${workspaceFolder}\\Build\\sort_files_in_subfolders_by_modification_year.js",
+      "stopOnEntry": false
+    },
+    {
+      "type": "extendscript-debug",
+      "request": "launch",
       "name": "batch_detect_overprints",
       "program": "${workspaceFolder}\\Build\\batch_detect_overprints.js",
       "stopOnEntry": false
