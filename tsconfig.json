@@ -5,7 +5,7 @@
     "types": [
       "types-for-adobe/Illustrator/2018"
     ],
-    "outDir": "../build/",
+    "outDir": "./build/",
     "removeComments": true
   },
   "exclude": [
