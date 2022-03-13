@@ -7,58 +7,13 @@
     {
       "type": "extendscript-debug",
       "request": "launch",
-      "name": "sort_files_in_subfolders_by_modification_year",
-      "program": "${workspaceFolder}\\Build\\sort_files_in_subfolders_by_modification_year.js",
-      "stopOnEntry": false
+      "name": "Debug current file",
+      "program": "${workspaceFolder}/build/${fileBasenameNoExtension}.js",
+      "preLaunchTask": "tsc: build - current file",
+      "stopOnEntry": true,
+      "outFiles": [
+        "${workspaceFolder}/build/*.js"
+      ],
     },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "batch_detect_overprints",
-      "program": "${workspaceFolder}\\Build\\batch_detect_overprints.js",
-      "stopOnEntry": false
-    },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "relink_files_txt_file_paths",
-      "program": "${workspaceFolder}\\Build\\relink_files_txt_file_paths.js",
-      "stopOnEntry": false
-    },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "cut_paths_at_anchors",
-      "program": "${workspaceFolder}\\Build\\cut_paths_at_anchors.js",
-      "stopOnEntry": false
-    },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "export_images",
-      "program": "${workspaceFolder}\\Build\\export_images.js",
-      "stopOnEntry": false
-    },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "select_pageItems_with_name",
-      "program": "${workspaceFolder}\\Build\\select_pageItems_with_name.js",
-      "stopOnEntry": false
-    },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "Test",
-      "program": "${workspaceFolder}\\Build\\test.js",
-      "stopOnEntry": false
-    },
-    {
-      "type": "extendscript-debug",
-      "request": "launch",
-      "name": "Menu-UI-Rectangle",
-      "program": "${workspaceFolder}\\Build\\Menu_UI_Rectangle.js",
-      "stopOnEntry": false
-    }
   ]
 }
