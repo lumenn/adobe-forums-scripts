@@ -8,12 +8,7 @@
       "type": "extendscript-debug",
       "request": "launch",
       "name": "Debug current file",
-      "program": "${workspaceFolder}/build/${fileBasenameNoExtension}.js",
-      "preLaunchTask": "tsc: build - current file",
-      "stopOnEntry": true,
-      "outFiles": [
-        "${workspaceFolder}/build/*.js"
-      ],
+      "script": "${workspaceFolder}/build/${fileBasenameNoExtension}.js"
     },
   ]
 }
